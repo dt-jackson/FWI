@@ -1,0 +1,12 @@
+# everything in the bin directory
+bin/*
+
+# everything in the obj directory
+obj/*
+
+# any .o or .d files
+*.[od]
+
+# vscode files
+.vscode/*
+

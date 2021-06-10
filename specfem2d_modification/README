@@ -1,0 +1,6 @@
+In order for adjoint runs to work properly in SPECFEM2D,
+the file compute_arrays_source.f90 needs to be updated.
+Copy the file in this directory to 
+specfem2d/src/specfem2D/
+and recompile.
+

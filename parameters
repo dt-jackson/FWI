@@ -1,0 +1,97 @@
+# The main parameters for the FWI program are specified in this file.
+# Comments are denoted by a '#' and anything that comes after them on a line will be ignored
+# Whitespace is also ignored. Most parameters (with the exception of file names) are not case sensitive
+
+# simulation parameters
+DT              = 7.5e-5          # time step
+NSTEP           = 6667         # number of time steps
+NPROC           = 2             # number of processors per source
+MODEL_PATH      =  DATA         # directory where model bins are located
+
+
+SF_BIN_FORWARD  = ./run_forward.sh>/dev/null  # executable to run a forward simulation - don't have to send output to /dev/null  
+SF_BIN_ADJOINT  = ./run_adjoint.sh>/dev/null  # executable to run an adjoint simulation
+
+
+#sources and receivers
+NUM_SRC         = 27             # number of sources
+NUM_REC         = 27            # number of receivers
+
+# max and min source-receiver distances
+MIN_SR_DIST = 3.0               # minimum source-recevier distance. receivers closer than  this will be muted
+MAX_SR_DIST = 50.0              # maximum source-receiver distance. receivers farther than this will be muted
+
+#files containing source and receiver locations
+SRC_LOC_FILE = ./src_loc  # source locations
+REC_LOC_FILE = ./rec_loc  # receiver locations
+
+# model extent
+XMIN            = -5.0          # minimum x value
+XMAX            = 31.0          # maximum x value
+ZMIN            = -13.0         # minimum z value
+ZMAX            = 0.0           # maximum z value
+
+# grid spacing
+DX_REG          = 0.1          # x/z step for regular grid
+DX_INV          = 0.2           # x/z step for inversion grid
+
+
+# decimation filter parameter
+SP_LP_CUTOFF    = 1.1     # cutoff (spatial) frequency for spatial lowpass filter
+                                # this is currently the variance of a gaussian filter
+                                # an appropriate selection will depend on DX_REG and DX_INV
+                                # plus any addition smoothing that is desired
+                                # the response spectrum is given by: T(theta) = exp[t*(cos(theta)-1)]
+                                # where theta is the normalized freq (0 to pi) and t is SP_LP_CUTOFF
+
+# median filter size for kernel filtering
+MED_FILT_SIZE   = 5             # size of 2d median filter in pixels. For no median filtering, use MED_FILT_SIZE=1
+                                # physical width and height will be (MED_FILT_SIZE-1)*DX_REX
+
+
+
+#optimization parameters
+SEARCH_DIR              = 2             # optimization search direction 0=steepest descent, 1=conjugate gradient (currently untested), 2=L-BFGS
+INITIAL_STEP_MULT       = 1.0           # initial line search step length (first guess of steplength for first iteration)
+
+# stopping criteria - inversion will stop when MAX_ITERATIONS is reached or the norm of the gradient is less than STOPPING_TOL
+MAX_ITERATIONS = 15
+STOPPING_TOL = 1e-30            
+
+LBFGS_MEM = 8                   # Memory level for L-BFGS (ignored if not using L-BFGS)
+ANGLE_RESTART = 0               # 1 to allow angle restart, 0 otherwise (if allowed, use steepest descent direction if the search direction is too close to orthogonal to the gradient)
+BACKTRACK_ONLY = 0              # 1 to perform backtrack linesearch with no curvature checking, 0 otherwise
+BRACKET_ONLY = 1                # 1 to perform full bracketing linesearch (no backtracking), 0 otherwise
+STRONG_CURVATURE = 1            # 1 to check strong curvature, 0 for regular curvature
+WOLFE_C1 = 1e-4                 # parameter for Wolfe condition 1 (sufficient decrease/Armijo condition)
+WOLFE_C2 = 0.9                  # parameter for Wolfe condition 2 (curvature condition)
+
+
+
+
+# parameter max and mins
+VP_MAX = 560
+VP_MIN = 100
+VS_MAX = 300
+VS_MIN = 50
+RHO_MAX = 2000
+RHO_MIN = 2000
+
+PR_MAX = 0.5                    # poisson ratio max
+PR_MIN = 0.2                    # poisson ration min
+
+MASK_KERNELS = 0                # 1 to apply mask to kernels, 0 otherwise - if, applied everything outside of the mask bounds will be fixed in the inversion
+MASK_XMIN = 0
+MASK_XMAX = 26
+MASK_ZMIN = -11
+MASK_ZMAX = -2.5
+
+
+MASK_DENS = 1                   # 1 to fix density in inversion, 0 to let density be a free parameter
+
+DATA_STDEV = 1e0                # used if you want to scale the waveform misfit
+
+MISFIT_TYPE = 1                 # 1 for waveform, 2 for traveltime, 3 for envelope difference
+
+#####################################################
+

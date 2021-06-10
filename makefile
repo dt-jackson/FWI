@@ -30,7 +30,9 @@ LIBS :=   $(addprefix -l, $(LIBS))
 LIBDIR := $(addprefix -L, $(LIBDIR))
 INCDIR := $(addprefix -I, $(INCDIR))
 
-$(TARGET) : $(TARGETDIR)/$(TARGET)
+
+
+$(TARGET) : $(TARGETDIR) $(BUILDDIR) $(TARGETDIR)/$(TARGET)
 
 #link
 $(TARGETDIR)/$(TARGET) : $(OBJECTS)
@@ -45,6 +47,11 @@ $(BUILDDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT)
 	@$(CC) $(CFLAGS) $(INCDIR) -MM -MT $(BUILDDIR)/$*.$(OBJEXT) $< > $(BUILDDIR)/$*.$(DEPEXT)
 
 
+$(TARGETDIR) : 
+	mkdir $(TARGETDIR)
+
+$(BUILDDIR) :
+	mkdir $(BUILDDIR)
 
 clean :
 	@rm -f $(TARGETDIR)/$(TARGET)
