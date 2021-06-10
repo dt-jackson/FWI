@@ -12,8 +12,6 @@
 #include "gauss_conv.h"
 
 #include "optimization.h"
-#include "LDFP.h"
-#include "L_SR1_compact.h"
 
 #include "read_parameters.h"
 
